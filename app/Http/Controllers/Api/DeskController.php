@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeskStoreRequest;
 use App\Http\Resources\DeskResource;
 use Illuminate\Http\Request;
 use App\Models\Desk;
@@ -20,9 +21,11 @@ class DeskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DeskStoreRequest $request)
     {
-        //
+        $createdDesk = Desk::create($request->validate());
+
+        return new DeskResource($createdDesk);
     }
 
     /**
@@ -30,7 +33,7 @@ class DeskController extends Controller
      */
     public function show(string $id)
     {
-        return new DeskResource(Desk::with(lists) -> findOrFail($id));
+        return new DeskResource(Desk::with('lists') -> findOrFail($id));
     }
 
     /**
